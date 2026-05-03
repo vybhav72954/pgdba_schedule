@@ -36,7 +36,7 @@
                        name="electives"
                        value="{{ e.code }}"
                        {% if preselected and e.code in preselected %}checked{% endif %}>
-                <span class="elective-code">{{ e.code }}</span>
+                <span class="elective-code" data-course="{{ e.code }}">{{ e.code }}</span>
                 <span class="elective-name">— {{ e.name }}</span>
               </label>
             </li>
@@ -74,7 +74,7 @@
       <div>
         <strong>Selected electives:</strong>
         {% for code in selected %}
-          <span class="chip">{{ code }} — {{ electives | selectattr('code', 'equalto', code) | map(attribute='name') | first }}</span>
+          <span class="chip" data-course="{{ code }}">{{ code }} — {{ electives | selectattr('code', 'equalto', code) | map(attribute='name') | first }}</span>
         {% endfor %}
       </div>
       <div class="summary-meta">
@@ -120,7 +120,7 @@
                   <td>{{ s.day }}</td>
                   <td>{{ s.start }}–{{ s.end }}</td>
                   <td>
-                    <span class="course-code">{{ s.course }}</span>
+                    <span class="course-badge" data-course="{{ s.course }}">{{ s.course }}</span>
                     <span class="course-name">{{ course_names[s.course] }}</span>
                   </td>
                   <td>{{ s.session }}</td>
@@ -196,8 +196,8 @@
      href="https://vybhav72954.github.io/"
      target="_blank"
      rel="noopener noreferrer"
-     title="More projects by Vaibhav">
-    Built by Vaibhav · Portfolio <span class="pill-arrow" aria-hidden="true">→</span>
+     title="More projects by Vybhav (vybhav72954.github.io)">
+    Built by <span class="pill-name">Vybhav</span> · Portfolio <span class="pill-arrow" aria-hidden="true">→</span>
   </a>
 </body>
 </html>

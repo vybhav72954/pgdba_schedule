@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PGDBA Batch-11 · Semester III Schedule</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="page-header">
+    <h1>PGDBA Batch-11 · Semester III Schedule</h1>
+    {% if view == 'select' %}
+      <p class="subtitle">Select your 4 electives to generate your personal timetable.</p>
+    {% else %}
+      <p class="subtitle">Your personalised timetable for Semester III, 2026.</p>
+    {% endif %}
+  </header>
+
+  <main class="container">
+
+  {% if error %}
+    <div class="error-banner">{{ error }}</div>
+  {% endif %}
+
+  {% if view == 'select' %}
+    <form method="post" action="{{ url_for('schedule_view') }}" id="elective-form">
+      <fieldset class="elective-fieldset">
+        <legend>Choose 4 electives</legend>
+        <div class="counter"><span id="counter">0</span> / 4 selected</div>
+        <ul class="elective-list">
+          {% for e in electives %}
+            <li>
+              <label>
+                <input type="checkbox"
+                       name="electives"
+                       value="{{ e.code }}"
+                       {% if preselected and e.code in preselected %}checked{% endif %}>
+                <span class="elective-code">{{ e.code }}</span>
+                <span class="elective-name">— {{ e.name }}</span>
+              </label>
+            </li>
+          {% endfor %}
+        </ul>
+      </fieldset>
+      <button type="submit" id="generate-btn" disabled>Generate Schedule</button>
+    </form>
+
+    <script>
+      (function () {
+        const form = document.getElementById('elective-form');
+        const boxes = form.querySelectorAll('input[type=checkbox][name=electives]');
+        const counter = document.getElementById('counter');
+        const button = document.getElementById('generate-btn');
+        const MAX = 4;
+
+        function update() {
+          const checked = Array.from(boxes).filter(b => b.checked);
+          counter.textContent = checked.length;
+          const atMax = checked.length >= MAX;
+          boxes.forEach(b => {
+            if (!b.checked) b.disabled = atMax;
+          });
+          button.disabled = checked.length !== MAX;
+        }
+
+        boxes.forEach(b => b.addEventListener('change', update));
+        update();
+      })();
+    </script>
+
+  {% else %}
+    <section class="summary">
+      <div>
+        <strong>Selected electives:</strong>
+        {% for code in selected %}
+          <span class="chip">{{ code }} — {{ electives | selectattr('code', 'equalto', code) | map(attribute='name') | first }}</span>
+        {% endfor %}
+      </div>
+      <div class="summary-meta">
+        Total sessions: <strong>{{ session_count }}</strong>
+      </div>
+    </section>
+
+    {% if ibc_selected %}
+      <p class="note">Note: IBC sessions have not yet been added to the master schedule.</p>
+    {% endif %}
+
+    <form method="post" action="{{ url_for('export_ics') }}" class="export-form">
+      {% for code in selected %}
+        <input type="hidden" name="electives" value="{{ code }}">
+      {% endfor %}
+      <button type="submit" class="primary">Export to Calendar (.ics)</button>
+      <a class="back-link" href="{{ url_for('index') }}">← Change Electives</a>
+    </form>
+
+    {% if session_count == 0 %}
+      <p class="empty">No sessions to display.</p>
+    {% else %}
+      <div class="schedule-wrapper">
+        <table class="schedule-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Day</th>
+              <th>Time</th>
+              <th>Course</th>
+              <th>Session</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for week in weeks %}
+              <tr class="week-header">
+                <td colspan="5">{{ week.label }}</td>
+              </tr>
+              {% for s in week.sessions %}
+                {% set is_core = s.course in core_courses %}
+                <tr class="{{ 'core-row' if is_core else 'elective-row' }}">
+                  <td>{{ s.date.strftime('%d %b %Y') }}</td>
+                  <td>{{ s.day }}</td>
+                  <td>{{ s.start }}–{{ s.end }}</td>
+                  <td>
+                    <span class="course-code">{{ s.course }}</span>
+                    <span class="course-name">{{ course_names[s.course] }}</span>
+                  </td>
+                  <td>{{ s.session }}</td>
+                </tr>
+              {% endfor %}
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% endif %}
+  {% endif %}
+
+  </main>
+
+  <footer class="page-footer">
+    <small>IIM Calcutta · Local-only app · No data leaves your machine.</small>
+  </footer>
+</body>
+</html>

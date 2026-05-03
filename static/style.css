@@ -1,15 +1,25 @@
 :root {
-  --accent: #1a56db;
-  --accent-soft: #e0eaff;
-  --elective-tint: #f0f5ff;
-  --text: #111827;
-  --text-muted: #4b5563;
-  --border: #e5e7eb;
-  --bg: #ffffff;
-  --bg-alt: #f9fafb;
-  --error-bg: #fef2f2;
-  --error-border: #fecaca;
-  --error-text: #991b1b;
+  --bg: #0b1220;
+  --surface: #131b2e;
+  --surface-alt: #0f1729;
+  --surface-elev: #1a2540;
+  --border: #1f2a44;
+  --border-strong: #2a3556;
+  --text: #e6edf7;
+  --text-muted: #94a3b8;
+  --text-soft: #cbd5e1;
+  --accent: #60a5fa;
+  --accent-strong: #3b82f6;
+  --accent-soft: rgba(96, 165, 250, 0.14);
+  --elective-tint: rgba(96, 165, 250, 0.06);
+  --error-bg: rgba(248, 113, 113, 0.10);
+  --error-border: rgba(248, 113, 113, 0.35);
+  --error-text: #fca5a5;
+  --warn-bg: rgba(250, 204, 21, 0.08);
+  --warn-border: rgba(250, 204, 21, 0.30);
+  --warn-text: #fcd34d;
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.45);
+  --shadow-md: 0 4px 18px rgba(0, 0, 0, 0.30);
 }
 
 * { box-sizing: border-box; }
@@ -22,12 +32,22 @@ html, body {
   font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", system-ui, sans-serif;
   font-size: 15px;
   line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a { color: var(--accent); }
+a:hover { color: #93c5fd; }
+
+::selection {
+  background: var(--accent-soft);
+  color: var(--text);
 }
 
 .page-header {
   padding: 28px 32px 18px;
   border-bottom: 1px solid var(--border);
-  background: var(--bg);
+  background: linear-gradient(180deg, #0f172a 0%, var(--bg) 100%);
 }
 
 .page-header h1 {
@@ -35,6 +55,7 @@ html, body {
   font-size: 22px;
   font-weight: 600;
   letter-spacing: -0.01em;
+  color: var(--text);
 }
 
 .subtitle {
@@ -46,14 +67,15 @@ html, body {
 .container {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 24px 32px 64px;
+  padding: 24px 32px 96px;
 }
 
 .page-footer {
   text-align: center;
-  padding: 18px;
+  padding: 18px 18px 32px;
   color: var(--text-muted);
   border-top: 1px solid var(--border);
+  font-size: 13px;
 }
 
 /* ---------- Error banner ---------- */
@@ -62,7 +84,7 @@ html, body {
   border: 1px solid var(--error-border);
   color: var(--error-text);
   padding: 10px 14px;
-  border-radius: 6px;
+  border-radius: 8px;
   margin-bottom: 18px;
   font-size: 14px;
 }
@@ -70,14 +92,16 @@ html, body {
 /* ---------- Elective selection ---------- */
 .elective-fieldset {
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 18px 22px;
   margin: 0 0 18px;
+  background: var(--surface);
 }
 
 .elective-fieldset legend {
   font-weight: 600;
   padding: 0 8px;
+  color: var(--text);
 }
 
 .counter {
@@ -112,35 +136,48 @@ html, body {
   width: 18px;
   height: 18px;
   accent-color: var(--accent);
+  cursor: pointer;
 }
 
-.elective-list input[type=checkbox]:disabled + .elective-code,
-.elective-list input[type=checkbox]:disabled ~ .elective-name {
-  color: #9ca3af;
+.elective-list input[type=checkbox]:disabled {
+  cursor: not-allowed;
+}
+
+.elective-list input[type=checkbox]:disabled ~ .elective-name,
+.elective-list label:has(input:disabled) .elective-code,
+.elective-list label:has(input:disabled) .elective-name {
+  color: #475569;
 }
 
 .elective-code {
   font-weight: 600;
   min-width: 70px;
   letter-spacing: 0.02em;
+  color: var(--text);
 }
 
 .elective-name { color: var(--text-muted); }
 
 button {
-  background: var(--accent);
-  color: white;
+  background: var(--accent-strong);
+  color: #ffffff;
   border: 0;
   padding: 10px 20px;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 15px;
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.15s ease;
+  transition: background 0.15s ease, transform 0.05s ease;
+  font-family: inherit;
 }
 
-button:hover:not(:disabled) { background: #1742ad; }
-button:disabled { background: #c7d2fe; cursor: not-allowed; }
+button:hover:not(:disabled) { background: #2563eb; }
+button:active:not(:disabled) { transform: translateY(1px); }
+button:disabled {
+  background: #1e293b;
+  color: #475569;
+  cursor: not-allowed;
+}
 
 /* ---------- Schedule view ---------- */
 .summary {
@@ -148,9 +185,9 @@ button:disabled { background: #c7d2fe; cursor: not-allowed; }
   justify-content: space-between;
   align-items: flex-start;
   gap: 16px;
-  background: var(--bg-alt);
+  background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 14px 18px;
   margin-bottom: 16px;
   flex-wrap: wrap;
@@ -162,6 +199,7 @@ button:disabled { background: #c7d2fe; cursor: not-allowed; }
   display: inline-block;
   background: var(--accent-soft);
   color: var(--accent);
+  border: 1px solid rgba(96, 165, 250, 0.25);
   border-radius: 999px;
   padding: 2px 10px;
   font-size: 12.5px;
@@ -172,11 +210,11 @@ button:disabled { background: #c7d2fe; cursor: not-allowed; }
 .summary-meta { color: var(--text-muted); font-size: 14px; }
 
 .note {
-  background: #fffbea;
-  border: 1px solid #fde68a;
-  color: #78350f;
+  background: var(--warn-bg);
+  border: 1px solid var(--warn-border);
+  color: var(--warn-text);
   padding: 10px 14px;
-  border-radius: 6px;
+  border-radius: 8px;
   margin-bottom: 16px;
   font-size: 14px;
 }
@@ -204,23 +242,25 @@ button:disabled { background: #c7d2fe; cursor: not-allowed; }
 /* ---------- Schedule table ---------- */
 .schedule-wrapper {
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 10px;
   overflow: hidden;
+  background: var(--surface-alt);
 }
 
 .schedule-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 14px;
+  color: var(--text-soft);
 }
 
 .schedule-table thead th {
   position: sticky;
   top: 0;
-  background: var(--bg-alt);
+  background: var(--surface-elev);
   text-align: left;
-  padding: 10px 14px;
-  border-bottom: 1px solid var(--border);
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border-strong);
   font-weight: 600;
   color: var(--text);
   z-index: 1;
@@ -232,32 +272,180 @@ button:disabled { background: #c7d2fe; cursor: not-allowed; }
   vertical-align: top;
 }
 
-.schedule-table tbody tr.core-row { background: var(--bg); }
-.schedule-table tbody tr.core-row:nth-child(even) { background: var(--bg-alt); }
+.schedule-table tbody tr.core-row { background: var(--surface-alt); }
+.schedule-table tbody tr.core-row:nth-child(even) { background: var(--surface); }
 .schedule-table tbody tr.elective-row { background: var(--elective-tint); }
 
 .week-header td {
-  background: #eef2ff !important;
+  background: rgba(96, 165, 250, 0.10) !important;
   font-weight: 600;
   color: var(--accent);
   padding: 6px 14px;
-  font-size: 13px;
-  letter-spacing: 0.01em;
+  font-size: 12.5px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--border-strong) !important;
 }
 
 .course-code {
   font-weight: 600;
   margin-right: 6px;
+  color: var(--text);
 }
 .course-name {
   color: var(--text-muted);
   font-size: 13px;
 }
 
+/* ---------- Export "thank-you" callout ---------- */
+.callout {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%) translateY(120%);
+  width: min(440px, calc(100% - 32px));
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+  padding: 18px 20px 16px;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+  z-index: 60;
+}
+
+.callout.visible {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.callout-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: transparent;
+  color: var(--text-muted);
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: 6px;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.callout-close:hover {
+  background: var(--surface-elev);
+  color: var(--text);
+}
+
+.callout-title {
+  margin: 0 0 4px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.callout-body {
+  margin: 0 0 14px;
+  font-size: 13.5px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.callout-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.callout-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--accent-strong);
+  color: #ffffff;
+  text-decoration: none;
+  padding: 8px 14px;
+  border-radius: 7px;
+  font-size: 13.5px;
+  font-weight: 500;
+  transition: background 0.15s ease;
+}
+
+.callout-cta:hover {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.callout-cta svg {
+  flex-shrink: 0;
+}
+
+.callout-dismiss {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border-strong);
+  padding: 7px 12px;
+  font-size: 13.5px;
+  font-weight: 500;
+}
+
+.callout-dismiss:hover {
+  background: var(--surface-elev);
+  color: var(--text);
+}
+
+/* ---------- Persistent portfolio pill ---------- */
+.portfolio-pill {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  color: var(--text-muted);
+  text-decoration: none;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 500;
+  box-shadow: var(--shadow-md);
+  z-index: 50;
+  transition: color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+  backdrop-filter: blur(6px);
+}
+
+.portfolio-pill:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.portfolio-pill .pill-arrow {
+  transition: transform 0.15s ease;
+}
+
+.portfolio-pill:hover .pill-arrow {
+  transform: translateX(2px);
+}
+
 @media (max-width: 720px) {
-  .container { padding: 16px; }
+  .container { padding: 16px 16px 96px; }
   .schedule-table { font-size: 13px; }
   .schedule-table thead th,
   .schedule-table tbody td { padding: 8px 10px; }
   .course-name { display: block; }
+  .portfolio-pill {
+    bottom: 8px;
+    right: 8px;
+    font-size: 11.5px;
+    padding: 6px 11px;
+  }
+  .callout {
+    bottom: 56px; /* clear the pill on small screens */
+  }
 }

@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
   <title>PGDBA Batch-11 · Semester III Schedule</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
@@ -85,7 +86,7 @@
       <p class="note">Note: IBC sessions have not yet been added to the master schedule.</p>
     {% endif %}
 
-    <form method="post" action="{{ url_for('export_ics') }}" class="export-form">
+    <form method="post" action="{{ url_for('export_ics') }}" class="export-form" id="export-form">
       {% for code in selected %}
         <input type="hidden" name="electives" value="{{ code }}">
       {% endfor %}
@@ -130,6 +131,59 @@
         </table>
       </div>
     {% endif %}
+
+    <div id="export-callout" class="callout" role="dialog" aria-live="polite" aria-labelledby="callout-title" aria-hidden="true">
+      <button type="button" class="callout-close" aria-label="Dismiss">×</button>
+      <h2 id="callout-title" class="callout-title">Calendar exported</h2>
+      <p class="callout-body">
+        If this saved you some timetable-wrangling, a star on the repo helps a lot
+        — and helps other batch-mates find the app.
+      </p>
+      <div class="callout-actions">
+        <a class="callout-cta"
+           href="https://github.com/vybhav72954/pgdba_schedule"
+           target="_blank"
+           rel="noopener noreferrer">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2.5l2.95 5.98 6.6.96-4.78 4.66 1.13 6.57L12 17.57l-5.9 3.1 1.13-6.57L2.45 9.44l6.6-.96L12 2.5z"/>
+          </svg>
+          Star on GitHub
+        </a>
+        <button type="button" class="callout-dismiss">Close</button>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        const form = document.getElementById('export-form');
+        const callout = document.getElementById('export-callout');
+        if (!form || !callout) return;
+
+        const closeBtn = callout.querySelector('.callout-close');
+        const dismissBtn = callout.querySelector('.callout-dismiss');
+
+        function show() {
+          callout.classList.add('visible');
+          callout.setAttribute('aria-hidden', 'false');
+        }
+        function hide() {
+          callout.classList.remove('visible');
+          callout.setAttribute('aria-hidden', 'true');
+        }
+
+        // Show shortly after submit so the file download has kicked off.
+        form.addEventListener('submit', function () {
+          setTimeout(show, 250);
+        });
+
+        closeBtn.addEventListener('click', hide);
+        dismissBtn.addEventListener('click', hide);
+
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape') hide();
+        });
+      })();
+    </script>
   {% endif %}
 
   </main>
@@ -137,5 +191,13 @@
   <footer class="page-footer">
     <small>IIM Calcutta · Local-only app · No data leaves your machine.</small>
   </footer>
+
+  <a class="portfolio-pill"
+     href="https://vybhav72954.github.io/"
+     target="_blank"
+     rel="noopener noreferrer"
+     title="More projects by Vaibhav">
+    Built by Vaibhav · Portfolio <span class="pill-arrow" aria-hidden="true">→</span>
+  </a>
 </body>
 </html>

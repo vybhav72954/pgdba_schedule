@@ -24,6 +24,14 @@
     "session": "HRM-1 & 2: RK"
   },
   {
+    "date": "2026-05-04",
+    "day": "Monday",
+    "start": "16:15",
+    "end": "17:45",
+    "course": "HRM",
+    "session": "HRM-1 & 2: RK"
+  },
+  {
     "date": "2026-05-05",
     "day": "Tuesday",
     "start": "10:15",
@@ -152,6 +160,14 @@
     "session": "HRM-4 & 5: RK"
   },
   {
+    "date": "2026-05-11",
+    "day": "Monday",
+    "start": "16:15",
+    "end": "17:45",
+    "course": "HRM",
+    "session": "HRM-4 & 5: RK"
+  },
+  {
     "date": "2026-05-12",
     "day": "Tuesday",
     "start": "10:15",
@@ -204,6 +220,14 @@
     "day": "Wednesday",
     "start": "14:30",
     "end": "16:00",
+    "course": "SAAPM",
+    "session": "SAAPM-1 & 2: MC"
+  },
+  {
+    "date": "2026-05-13",
+    "day": "Wednesday",
+    "start": "16:15",
+    "end": "17:45",
     "course": "SAAPM",
     "session": "SAAPM-1 & 2: MC"
   },
@@ -280,10 +304,26 @@
     "session": "EMABE-1 & 2: MC"
   },
   {
+    "date": "2026-05-20",
+    "day": "Wednesday",
+    "start": "16:15",
+    "end": "17:45",
+    "course": "EMABE",
+    "session": "EMABE-1 & 2: MC"
+  },
+  {
     "date": "2026-05-21",
     "day": "Thursday",
     "start": "08:30",
     "end": "10:00",
+    "course": "SAAPM",
+    "session": "SAAPM-3 & 4: MC"
+  },
+  {
+    "date": "2026-05-21",
+    "day": "Thursday",
+    "start": "10:15",
+    "end": "11:45",
     "course": "SAAPM",
     "session": "SAAPM-3 & 4: MC"
   },
@@ -300,6 +340,14 @@
     "day": "Thursday",
     "start": "14:30",
     "end": "16:00",
+    "course": "HRM",
+    "session": "HRM-6 & 7: RK"
+  },
+  {
+    "date": "2026-05-21",
+    "day": "Thursday",
+    "start": "16:15",
+    "end": "17:45",
     "course": "HRM",
     "session": "HRM-6 & 7: RK"
   },
@@ -346,8 +394,24 @@
   {
     "date": "2026-05-25",
     "day": "Monday",
+    "start": "12:00",
+    "end": "13:30",
+    "course": "PM",
+    "session": "PM-9 & 10: MS"
+  },
+  {
+    "date": "2026-05-25",
+    "day": "Monday",
     "start": "14:30",
     "end": "16:00",
+    "course": "EMABE",
+    "session": "EMABE-3 & 4: MC"
+  },
+  {
+    "date": "2026-05-25",
+    "day": "Monday",
+    "start": "16:15",
+    "end": "17:45",
     "course": "EMABE",
     "session": "EMABE-3 & 4: MC"
   },
@@ -372,6 +436,14 @@
     "day": "Tuesday",
     "start": "14:30",
     "end": "16:00",
+    "course": "HRM",
+    "session": "HRM-9 & 10: RK"
+  },
+  {
+    "date": "2026-05-26",
+    "day": "Tuesday",
+    "start": "16:15",
+    "end": "17:45",
     "course": "HRM",
     "session": "HRM-9 & 10: RK"
   },
@@ -404,6 +476,14 @@
     "day": "Friday",
     "start": "10:15",
     "end": "11:45",
+    "course": "FRM",
+    "session": "FRM-9 & 10: SP"
+  },
+  {
+    "date": "2026-05-29",
+    "day": "Friday",
+    "start": "12:00",
+    "end": "13:30",
     "course": "FRM",
     "session": "FRM-9 & 10: SP"
   },
@@ -460,6 +540,14 @@
     "day": "Wednesday",
     "start": "14:30",
     "end": "16:00",
+    "course": "SAAPM",
+    "session": "SAAPM-6 & 7: MC"
+  },
+  {
+    "date": "2026-06-03",
+    "day": "Wednesday",
+    "start": "16:15",
+    "end": "17:45",
     "course": "SAAPM",
     "session": "SAAPM-6 & 7: MC"
   },
@@ -532,6 +620,14 @@
     "day": "Wednesday",
     "start": "14:30",
     "end": "16:00",
+    "course": "SAAPM",
+    "session": "SAAPM-8 & 9: MC"
+  },
+  {
+    "date": "2026-06-10",
+    "day": "Wednesday",
+    "start": "16:15",
+    "end": "17:45",
     "course": "SAAPM",
     "session": "SAAPM-8 & 9: MC"
   },
@@ -624,10 +720,26 @@
     "session": "CSLBA-5 & 6: PB"
   },
   {
+    "date": "2026-08-10",
+    "day": "Monday",
+    "start": "12:00",
+    "end": "13:30",
+    "course": "CSLBA",
+    "session": "CSLBA-5 & 6: PB"
+  },
+  {
     "date": "2026-08-11",
     "day": "Tuesday",
     "start": "10:15",
     "end": "11:45",
+    "course": "CMF",
+    "session": "CMF-1 & 2: VR"
+  },
+  {
+    "date": "2026-08-11",
+    "day": "Tuesday",
+    "start": "12:00",
+    "end": "13:30",
     "course": "CMF",
     "session": "CMF-1 & 2: VR"
   },
@@ -650,8 +762,24 @@
   {
     "date": "2026-08-12",
     "day": "Wednesday",
+    "start": "12:00",
+    "end": "13:30",
+    "course": "CSLBA",
+    "session": "CSLBA-7 & 8: PB"
+  },
+  {
+    "date": "2026-08-12",
+    "day": "Wednesday",
     "start": "14:30",
     "end": "16:00",
+    "course": "PRO",
+    "session": "PRO-1 & 2: SB"
+  },
+  {
+    "date": "2026-08-12",
+    "day": "Wednesday",
+    "start": "16:15",
+    "end": "17:45",
     "course": "PRO",
     "session": "PRO-1 & 2: SB"
   },
@@ -696,6 +824,14 @@
     "session": "CSLBA-9 & 10: PB"
   },
   {
+    "date": "2026-08-17",
+    "day": "Monday",
+    "start": "12:00",
+    "end": "13:30",
+    "course": "CSLBA",
+    "session": "CSLBA-9 & 10: PB"
+  },
+  {
     "date": "2026-08-18",
     "day": "Tuesday",
     "start": "10:15",
@@ -716,6 +852,14 @@
     "day": "Wednesday",
     "start": "14:30",
     "end": "16:00",
+    "course": "PRO",
+    "session": "PRO-4 & 5: SB"
+  },
+  {
+    "date": "2026-08-19",
+    "day": "Wednesday",
+    "start": "16:15",
+    "end": "17:45",
     "course": "PRO",
     "session": "PRO-4 & 5: SB"
   },
@@ -762,6 +906,14 @@
   {
     "date": "2026-09-01",
     "day": "Tuesday",
+    "start": "12:00",
+    "end": "13:30",
+    "course": "CMF",
+    "session": "CMF-4 & 5: VR"
+  },
+  {
+    "date": "2026-09-01",
+    "day": "Tuesday",
     "start": "14:30",
     "end": "16:00",
     "course": "BDM",
@@ -780,6 +932,14 @@
     "day": "Wednesday",
     "start": "14:30",
     "end": "16:00",
+    "course": "PRO",
+    "session": "PRO-7 & 8: SB"
+  },
+  {
+    "date": "2026-09-02",
+    "day": "Wednesday",
+    "start": "16:15",
+    "end": "17:45",
     "course": "PRO",
     "session": "PRO-7 & 8: SB"
   },
@@ -816,10 +976,26 @@
     "session": "PRO-9 & 10: SB"
   },
   {
+    "date": "2026-09-07",
+    "day": "Monday",
+    "start": "16:15",
+    "end": "17:45",
+    "course": "PRO",
+    "session": "PRO-9 & 10: SB"
+  },
+  {
     "date": "2026-09-08",
     "day": "Tuesday",
     "start": "10:15",
     "end": "11:45",
+    "course": "CMF",
+    "session": "CMF-7 & 8: VR"
+  },
+  {
+    "date": "2026-09-08",
+    "day": "Tuesday",
+    "start": "12:00",
+    "end": "13:30",
     "course": "CMF",
     "session": "CMF-7 & 8: VR"
   },

@@ -7,8 +7,13 @@ Two entry points:
   not by the running app.
 - ``load_schedule(json_path)`` — reads the pre-parsed ``schedule.json`` that
   ships with the app. The Flask app uses this exclusively, so end users never
-  need pandas/openpyxl in the request path and never need the Excel file
-  present at runtime.
+  need an Excel file present at runtime.
+
+Excel quirk worth knowing about: double sessions like ``HRM-1 & 2: RK`` are
+**merged cells** that span two consecutive time-slot columns (e.g. 14:30–16:00
++ 16:15–17:45 = 3 hours of class with a 15-min break in the middle). The
+parser uses openpyxl directly so it can see merge ranges and emit one event
+per time-slot the merge covers, with the same session label on both.
 """
 
 from __future__ import annotations
@@ -19,14 +24,20 @@ import re
 from typing import Any
 
 SHEET_NAME = "Schedule"
-DATE_COL = 1
 
+# openpyxl is 1-indexed. Date is in column 2; the original spec referenced
+# pandas 0-indexed columns (date = col 1), but we now read with openpyxl so
+# everything below is in openpyxl's coordinate system.
+DATE_COL = 2
+
+# openpyxl column index → (start, end) for the five teaching slots.
+# (Column 6, the 13:30–14:30 lunch slot, is intentionally absent.)
 TIME_SLOTS: dict[int, tuple[str, str]] = {
-    2: ("08:30", "10:00"),
-    3: ("10:15", "11:45"),
-    4: ("12:00", "13:30"),
-    6: ("14:30", "16:00"),
-    7: ("16:15", "17:45"),
+    3: ("08:30", "10:00"),
+    4: ("10:15", "11:45"),
+    5: ("12:00", "13:30"),
+    7: ("14:30", "16:00"),
+    8: ("16:15", "17:45"),
 }
 
 # Order does not matter for re.match (it anchors at start), but listing the
@@ -39,11 +50,6 @@ KNOWN_CODES: list[str] = [
 
 
 def _coerce_date(value: Any) -> datetime.date | None:
-    # Imported lazily so the running app does not pull in pandas.
-    import pandas as pd
-
-    if isinstance(value, pd.Timestamp):
-        return value.to_pydatetime().date()
     if isinstance(value, datetime.datetime):
         return value.date()
     if isinstance(value, datetime.date):
@@ -61,25 +67,45 @@ def _detect_course(cell: str) -> str | None:
     return None
 
 
+def _build_merge_lookup(ws) -> dict[tuple[int, int], Any]:
+    """Map every (row, col) inside a merged range to the top-left cell value.
+
+    openpyxl stores merged-cell values only on the top-left cell; every other
+    cell in the merge has ``value == None``. This lookup lets us treat each
+    cell independently and still resolve the right value.
+    """
+    lookup: dict[tuple[int, int], Any] = {}
+    for merged in ws.merged_cells.ranges:
+        topleft = ws.cell(merged.min_row, merged.min_col).value
+        if topleft is None:
+            continue
+        for r in range(merged.min_row, merged.max_row + 1):
+            for c in range(merged.min_col, merged.max_col + 1):
+                lookup[(r, c)] = topleft
+    return lookup
+
+
 def parse_schedule(filepath: str) -> list[dict]:
     """Parse the master Excel into session dicts. Build-time use only."""
-    import pandas as pd
+    from openpyxl import load_workbook
 
-    df = pd.read_excel(filepath, sheet_name=SHEET_NAME, header=None)
+    wb = load_workbook(filepath, data_only=True)
+    ws = wb[SHEET_NAME]
+    merge_lookup = _build_merge_lookup(ws)
 
     sessions: list[dict] = []
-    for _, row in df.iterrows():
-        date = _coerce_date(row[DATE_COL])
+    for row_idx in range(1, ws.max_row + 1):
+        date = _coerce_date(ws.cell(row_idx, DATE_COL).value)
         if date is None:
             continue
 
         for col, (start, end) in TIME_SLOTS.items():
-            if col >= len(row):
+            value = merge_lookup.get((row_idx, col))
+            if value is None:
+                value = ws.cell(row_idx, col).value
+            if not isinstance(value, str):
                 continue
-            cell = row[col]
-            if not isinstance(cell, str):
-                continue
-            course = _detect_course(cell)
+            course = _detect_course(value)
             if course is None:
                 continue
             sessions.append({
@@ -88,7 +114,7 @@ def parse_schedule(filepath: str) -> list[dict]:
                 "start": start,
                 "end": end,
                 "course": course,
-                "session": cell.strip(),
+                "session": value.strip(),
             })
 
     sessions.sort(key=lambda s: (s["date"], s["start"]))

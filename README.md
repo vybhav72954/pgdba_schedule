@@ -36,3 +36,14 @@ Select your 4 electives → view your schedule → click **Export to Calendar (.
 ## Notes
 
 - IBC sessions are not yet in the master schedule and will not appear in your timetable even if selected. The app surfaces a small note when this happens.
+
+## Rebuilding `schedule.json`
+
+In future onve we get IBC schedule, we will have to update the `schedule.json`.
+
+1. Drop the new Excel into `data/` keeping the original filename (`PGDBA_Batch-11_Semester-III_Class_Schedule_24-04-2026.xlsx`), or pass `--input` to the script.
+2. Run:
+
+       uv run python build_schedule.py
+
+3. Commit the updated `schedule.json`.

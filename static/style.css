@@ -41,6 +41,18 @@
 
 * { box-sizing: border-box; }
 
+/* Defensive wrap: any text-heavy block can break long unbroken strings (codes,
+   URLs, etc.) rather than overflowing its parent. */
+.audit-question-text,
+.audit-help,
+.import-tip,
+.cleanup-link,
+.note,
+.error-banner,
+.subtitle,
+.course-name,
+.session-text { overflow-wrap: anywhere; }
+
 html, body {
   margin: 0;
   padding: 0;
@@ -222,12 +234,14 @@ a:hover { color: #93c5fd; }
 
 .elective-list label {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 12px;
+  gap: 6px 12px;
   cursor: pointer;
 }
 
 .elective-list input[type=checkbox] {
+  flex: 0 0 auto;
   width: 18px;
   height: 18px;
   accent-color: var(--accent);
@@ -241,13 +255,19 @@ a:hover { color: #93c5fd; }
 }
 
 .elective-code {
+  flex: 0 0 auto;
   font-weight: 700;
   min-width: 70px;
   letter-spacing: 0.04em;
   font-family: ui-monospace, "SF Mono", Consolas, monospace;
   font-size: 13px;
 }
-.elective-name { color: var(--text-muted); }
+.elective-name {
+  flex: 1 1 200px;
+  min-width: 0;
+  color: var(--text-muted);
+  overflow-wrap: anywhere;
+}
 
 /* Use the per-course palette on selection labels too */
 .elective-list .elective-code[data-course]    { color: var(--course-color, var(--accent)); }
@@ -433,9 +453,13 @@ button:disabled {
   font-size: 12.5px;
   margin: 2px 4px 2px 0;
   font-weight: 600;
+  max-width: 100%;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 .chip::before {
   content: "";
+  flex: 0 0 auto;
   width: 6px;
   height: 6px;
   border-radius: 50%;
@@ -497,8 +521,9 @@ button:disabled {
   table-layout: auto;
 }
 
-.schedule-table tbody td:nth-child(4) { min-width: 220px; }
-.schedule-table tbody td:nth-child(5) { word-break: break-word; overflow-wrap: anywhere; }
+.schedule-table tbody td:nth-child(1),
+.schedule-table tbody td:nth-child(2) { white-space: nowrap; }
+.schedule-table tbody td:nth-child(5) { overflow-wrap: anywhere; }
 
 .schedule-table thead th {
   position: sticky;
@@ -760,6 +785,12 @@ button:disabled {
   .schedule-table thead th,
   .schedule-table tbody td { padding: 8px 10px; }
   .course-name { display: block; }
+  .cleanup-link { text-align: left; }
+  .summary { padding: 12px 14px; }
+  .audit-fieldset,
+  .elective-fieldset { padding: 16px 14px; }
+  .audit-question { padding: 12px 14px; }
+  .import-tip { padding: 10px 12px; font-size: 13px; }
   .portfolio-pill {
     bottom: 8px; right: 8px;
     font-size: 11.5px; padding: 6px 11px;

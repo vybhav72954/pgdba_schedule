@@ -87,6 +87,11 @@
     <p class="note">Note: IBC sessions have not yet been added to the master schedule.</p>
     {% endif %}
 
+    <p class="import-tip">
+      <strong>Tip:</strong> by default, Google Calendar imports the <code>.ics</code> into your <em>primary</em> calendar. For a toggleable PGDBA calendar (with one-click cleanup later), create a dedicated calendar first &mdash;
+      <a href="https://github.com/vybhav72954/pgdba_schedule#recommended-import-into-a-dedicated-google-calendar" target="_blank" rel="noopener noreferrer">how to do that &rarr;</a>
+    </p>
+
     <form method="post" action="{{ url_for('export_ics') }}" class="export-form" id="export-form">
       {% for code in selected %}
       <input type="hidden" name="electives" value="{{ code }}">
@@ -94,6 +99,11 @@
       <button type="submit" class="primary">Export to Calendar (.ics)</button>
       <a class="back-link" href="{{ url_for('index') }}">← Change Electives</a>
     </form>
+
+    <p class="cleanup-link">
+      Accidentally imported into the wrong calendar?
+      <a href="https://github.com/vybhav72954/pgdba_schedule#accidentally-imported-remove-the-events" target="_blank" rel="noopener noreferrer">Cleanup script &amp; instructions &rarr;</a>
+    </p>
 
     {% if session_count == 0 %}
     <p class="empty">No sessions to display.</p>

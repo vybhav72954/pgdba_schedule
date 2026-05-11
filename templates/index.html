@@ -27,7 +27,7 @@
 
     {% if view == 'select' %}
     <form method="post" action="{{ url_for('schedule_view') }}" id="elective-form">
-      <fieldset class="elective-fieldset">
+      <fieldset class="elective-fieldset" id="electives-fieldset">
         <legend>Choose 4 electives</legend>
         <div class="counter"><span id="counter">0</span> / 4 selected</div>
         <ul class="elective-list">
@@ -43,28 +43,140 @@
           {% endfor %}
         </ul>
       </fieldset>
+
+      <div class="audit-question" id="audit-question" hidden>
+        <p class="audit-question-text">
+          <strong>Auditing any other courses?</strong>
+          Sit in on extras without taking them for credit. They&rsquo;re exported as a
+          <em>separate</em> <code>.ics</code> so you can drop them into a different Google
+          Calendar and get a distinct colour.
+        </p>
+        <div class="audit-question-actions">
+          <button type="button" class="audit-choice primary" id="audit-yes">Yes, let me pick</button>
+          <button type="button" class="audit-choice secondary" id="audit-no">No, skip</button>
+        </div>
+      </div>
+
+      <fieldset class="audit-fieldset" id="audits-fieldset" hidden>
+        <legend>Audit <span class="legend-tag">optional, up to 3</span></legend>
+        <p class="audit-help">
+          Pick up to 3 of the remaining courses. They&rsquo;ll be exported as a separate
+          <code>.ics</code> file so you can drop them into a different Google Calendar.
+        </p>
+        <div class="counter audit-counter-row"><span id="audit-counter">0</span> / 3 audits selected</div>
+        <ul class="elective-list audit-list">
+          {% for e in electives %}
+          <li data-course-code="{{ e.code }}">
+            <label>
+              <input type="checkbox" name="audits" value="{{ e.code }}" {% if preselected_audits and e.code in
+                preselected_audits %}checked{% endif %}>
+              <span class="elective-code" data-course="{{ e.code }}">{{ e.code }}</span>
+              <span class="elective-name">— {{ e.name }}</span>
+            </label>
+          </li>
+          {% endfor %}
+        </ul>
+        <button type="button" class="audit-reset" id="audit-reset">Actually, I&rsquo;m not auditing</button>
+      </fieldset>
+
       <button type="submit" id="generate-btn" disabled>Generate Schedule</button>
     </form>
 
     <script>
       (function () {
         const form = document.getElementById('elective-form');
-        const boxes = form.querySelectorAll('input[type=checkbox][name=electives]');
-        const counter = document.getElementById('counter');
+        const eboxes = form.querySelectorAll('input[type=checkbox][name=electives]');
+        const aboxes = form.querySelectorAll('input[type=checkbox][name=audits]');
+        const eCounter = document.getElementById('counter');
+        const aCounter = document.getElementById('audit-counter');
         const button = document.getElementById('generate-btn');
-        const MAX = 4;
+        const auditQuestion = document.getElementById('audit-question');
+        const auditFieldset = document.getElementById('audits-fieldset');
+        const auditYes = document.getElementById('audit-yes');
+        const auditNo = document.getElementById('audit-no');
+        const auditReset = document.getElementById('audit-reset');
+        const E_MAX = 4;
+        const A_MAX = 3;
 
-        function update() {
-          const checked = Array.from(boxes).filter(b => b.checked);
-          counter.textContent = checked.length;
-          const atMax = checked.length >= MAX;
-          boxes.forEach(b => {
-            if (!b.checked) b.disabled = atMax;
-          });
-          button.disabled = checked.length !== MAX;
+        // States: null = haven't asked yet, 'open' = picking audits, 'skipped' = user said no.
+        let auditMode = null;
+        // If the server bounced us back with audits already checked (validation error),
+        // jump straight into the picker so the user can fix them in place.
+        if (Array.from(aboxes).some(b => b.checked)) auditMode = 'open';
+
+        function chosenElectiveSet() {
+          const s = new Set();
+          eboxes.forEach(b => { if (b.checked) s.add(b.value); });
+          return s;
         }
 
-        boxes.forEach(b => b.addEventListener('change', update));
+        function syncAuditList() {
+          const chosen = chosenElectiveSet();
+          aboxes.forEach(b => {
+            const li = b.closest('li');
+            if (chosen.has(b.value)) {
+              if (b.checked) b.checked = false;
+              li.hidden = true;
+            } else {
+              li.hidden = false;
+            }
+          });
+        }
+
+        function visibleAuditCount() {
+          return Array.from(aboxes).filter(b => b.checked && !b.closest('li').hidden).length;
+        }
+
+        function update() {
+          const eChecked = Array.from(eboxes).filter(b => b.checked).length;
+          const eAtMax = eChecked >= E_MAX;
+
+          // Cap electives at 4.
+          eboxes.forEach(b => { b.disabled = !b.checked && eAtMax; });
+          eCounter.textContent = eChecked;
+
+          // Audit visibility/state machine.
+          if (eChecked < E_MAX) {
+            auditQuestion.hidden = true;
+            auditFieldset.hidden = true;
+          } else if (auditMode === null) {
+            auditQuestion.hidden = false;
+            auditFieldset.hidden = true;
+          } else if (auditMode === 'open') {
+            auditQuestion.hidden = true;
+            auditFieldset.hidden = false;
+            syncAuditList();
+          } else { // 'skipped'
+            auditQuestion.hidden = true;
+            auditFieldset.hidden = true;
+          }
+
+          // Audit cap + counter (only meaningful when fieldset is showing).
+          const aChecked = visibleAuditCount();
+          aCounter.textContent = aChecked;
+          const aAtMax = aChecked >= A_MAX;
+          aboxes.forEach(b => {
+            if (b.closest('li').hidden) { b.disabled = true; return; }
+            b.disabled = !b.checked && aAtMax;
+          });
+
+          button.disabled = eChecked !== E_MAX;
+        }
+
+        auditYes.addEventListener('click', () => { auditMode = 'open'; update(); });
+        auditNo.addEventListener('click', () => {
+          auditMode = 'skipped';
+          aboxes.forEach(b => { b.checked = false; });
+          update();
+        });
+        auditReset.addEventListener('click', () => {
+          auditMode = 'skipped';
+          aboxes.forEach(b => { b.checked = false; });
+          update();
+        });
+
+        eboxes.forEach(b => b.addEventListener('change', update));
+        aboxes.forEach(b => b.addEventListener('change', update));
         update();
       })();
     </script>
@@ -78,8 +190,18 @@
           map(attribute='name') | first }}</span>
         {% endfor %}
       </div>
+      {% if audits %}
+      <div class="audit-summary">
+        <strong>Auditing:</strong>
+        {% for code in audits %}
+        <span class="chip audit-chip" data-course="{{ code }}">{{ code }} — {{ electives | selectattr('code',
+          'equalto', code) | map(attribute='name') | first }}</span>
+        {% endfor %}
+      </div>
+      {% endif %}
       <div class="summary-meta">
         Total sessions: <strong>{{ session_count }}</strong>
+        {% if audit_session_count %}<span class="meta-aside">({{ audit_session_count }} audit)</span>{% endif %}
       </div>
     </section>
 
@@ -87,13 +209,36 @@
     <p class="note">Note: IBC sessions have not yet been added to the master schedule.</p>
     {% endif %}
 
-    <form method="post" action="{{ url_for('export_ics') }}" class="export-form" id="export-form">
-      {% for code in selected %}
-      <input type="hidden" name="electives" value="{{ code }}">
-      {% endfor %}
-      <button type="submit" class="primary">Export to Calendar (.ics)</button>
+    <p class="import-tip">
+      <strong>Tip:</strong> by default, Google Calendar imports the <code>.ics</code> into your <em>primary</em> calendar. For a toggleable PGDBA calendar (with one-click cleanup later), create a dedicated calendar first &mdash;
+      <a href="https://github.com/vybhav72954/pgdba_schedule#recommended-import-into-a-dedicated-google-calendar" target="_blank" rel="noopener noreferrer">how to do that &rarr;</a>
+      {% if audits %}<br>
+      <strong class="audit-emphasis">For audits:</strong> create a <em>second</em> calendar (e.g. <code>PGDBA Audits</code>) and import the audit <code>.ics</code> into it &mdash; you&rsquo;ll get a different colour automatically.
+      {% endif %}
+    </p>
+
+    <div class="export-forms">
+      <form method="post" action="{{ url_for('export_ics') }}" class="export-form export-form-js">
+        {% for code in selected %}<input type="hidden" name="electives" value="{{ code }}">{% endfor %}
+        {% for code in audits %}<input type="hidden" name="audits" value="{{ code }}">{% endfor %}
+        <button type="submit" class="primary">Export Schedule (.ics)</button>
+      </form>
+
+      {% if audits %}
+      <form method="post" action="{{ url_for('export_audit_ics') }}" class="export-form export-form-js">
+        {% for code in selected %}<input type="hidden" name="electives" value="{{ code }}">{% endfor %}
+        {% for code in audits %}<input type="hidden" name="audits" value="{{ code }}">{% endfor %}
+        <button type="submit" class="primary audit-button">Export Audits (.ics)</button>
+      </form>
+      {% endif %}
+
       <a class="back-link" href="{{ url_for('index') }}">← Change Electives</a>
-    </form>
+    </div>
+
+    <p class="cleanup-link">
+      Accidentally imported into the wrong calendar?
+      <a href="https://github.com/vybhav72954/pgdba_schedule#accidentally-imported-remove-the-events" target="_blank" rel="noopener noreferrer">Cleanup script &amp; instructions &rarr;</a>
+    </p>
 
     {% if session_count == 0 %}
     <p class="empty">No sessions to display.</p>
@@ -115,13 +260,14 @@
             <td colspan="5">{{ week.label }}</td>
           </tr>
           {% for s in week.sessions %}
-          {% set is_core = s.course in core_courses %}
-          <tr class="{{ 'core-row' if is_core else 'elective-row' }}">
+          {% set cat = s.category %}
+          <tr class="{{ cat }}-row">
             <td>{{ s.date.strftime('%d %b %Y') }}</td>
             <td>{{ s.day }}</td>
             <td>{{ s.start }}–{{ s.end }}</td>
             <td>
               <span class="course-badge" data-course="{{ s.course }}">{{ s.course }}</span>
+              {% if cat == 'audit' %}<span class="audit-badge">AUDIT</span>{% endif %}
               <span class="course-name">{{ course_names[s.course] }}</span>
             </td>
             <td>{{ s.session }}</td>
@@ -155,9 +301,9 @@
 
     <script>
       (function () {
-        const form = document.getElementById('export-form');
+        const forms = document.querySelectorAll('.export-form-js');
         const callout = document.getElementById('export-callout');
-        if (!form || !callout) return;
+        if (!forms.length || !callout) return;
 
         const closeBtn = callout.querySelector('.callout-close');
         const dismissBtn = callout.querySelector('.callout-dismiss');
@@ -172,9 +318,9 @@
         }
 
         // Show shortly after submit so the file download has kicked off.
-        form.addEventListener('submit', function () {
+        forms.forEach(f => f.addEventListener('submit', function () {
           setTimeout(show, 250);
-        });
+        }));
 
         closeBtn.addEventListener('click', hide);
         dismissBtn.addEventListener('click', hide);

@@ -33,7 +33,12 @@ def _fmt_local(date: datetime.date, hhmm: str) -> str:
 
 
 def _uid(session: dict) -> str:
-    raw = f"{session['date']}|{session['start']}|{session['session']}"
+    # Audit events get a distinct UID so they don't collide with a
+    # hypothetical non-audit export of the same course; core/elective UIDs
+    # stay stable across re-exports (Google Calendar then updates rather than
+    # duplicating on re-import).
+    audit_marker = "AUDIT|" if session.get("category") == "audit" else ""
+    raw = f"{audit_marker}{session['date']}|{session['start']}|{session['session']}"
     digest = hashlib.sha1(raw.encode("utf-8")).hexdigest()[:16]
     return f"{digest}@pgdba-schedule.local"
 
@@ -58,10 +63,12 @@ def _vevent(session: dict, dtstamp: str) -> list[str]:
     course = session["course"]
     full_name = COURSE_NAMES.get(course, course)
     instructor = INSTRUCTORS.get(course, "")
-    summary = f"{session['session'].split(':')[0].strip()} | {full_name}"
-    description = instructor
+    is_audit = session.get("category") == "audit"
+    prefix = "[AUDIT] " if is_audit else ""
+    summary = f"{prefix}{session['session'].split(':')[0].strip()} | {full_name}"
+    description = "Auditing — " + instructor if is_audit and instructor else instructor
 
-    return [
+    lines = [
         "BEGIN:VEVENT",
         f"UID:{_uid(session)}",
         f"DTSTAMP:{dtstamp}",
@@ -70,6 +77,10 @@ def _vevent(session: dict, dtstamp: str) -> list[str]:
         f"SUMMARY:{_escape(summary)}",
         f"DESCRIPTION:{_escape(description)}",
         f"LOCATION:{_escape('IIM Calcutta')}",
+    ]
+    if is_audit:
+        lines.append("CATEGORIES:AUDIT")
+    lines += [
         "BEGIN:VALARM",
         "ACTION:DISPLAY",
         "DESCRIPTION:Reminder",
@@ -77,6 +88,7 @@ def _vevent(session: dict, dtstamp: str) -> list[str]:
         "END:VALARM",
         "END:VEVENT",
     ]
+    return lines
 
 
 def generate_ics(sessions: list[dict]) -> str:

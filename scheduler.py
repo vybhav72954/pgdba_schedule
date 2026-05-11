@@ -40,8 +40,35 @@ INSTRUCTORS: dict[str, str] = {
 }
 
 
-def get_schedule(all_sessions: list[dict], selected_electives: list[str]) -> list[dict]:
-    keep = set(CORE_COURSES) | set(selected_electives)
-    filtered = [s for s in all_sessions if s["course"] in keep]
-    filtered.sort(key=lambda s: (s["date"], s["start"]))
-    return filtered
+def get_schedule(
+    all_sessions: list[dict],
+    selected_electives: list[str],
+    selected_audits: list[str] | None = None,
+) -> list[dict]:
+    """Return cores + chosen electives + audited courses, sorted by date/time.
+
+    Each returned session dict is a shallow copy of the input with a
+    ``category`` field set to ``"core"``, ``"elective"``, or ``"audit"``.
+    Routes filter on ``category`` to split the unified list into the
+    schedule export (cores + electives) and the audit export (audits only).
+    """
+    cores = set(CORE_COURSES)
+    electives = set(selected_electives)
+    audits = set(selected_audits or [])
+    # An audit can never be a course the student is already taking.
+    audits -= cores | electives
+
+    out: list[dict] = []
+    for s in all_sessions:
+        course = s["course"]
+        if course in cores:
+            category = "core"
+        elif course in electives:
+            category = "elective"
+        elif course in audits:
+            category = "audit"
+        else:
+            continue
+        out.append({**s, "category": category})
+    out.sort(key=lambda s: (s["date"], s["start"]))
+    return out

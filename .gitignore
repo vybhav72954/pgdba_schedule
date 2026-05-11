@@ -29,3 +29,4 @@ instance/
 .flaskenv
 CLAUDE.md
 data/
+screens/*

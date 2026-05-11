@@ -44,17 +44,29 @@
         </ul>
       </fieldset>
 
-      <fieldset class="audit-fieldset" id="audits-fieldset">
+      <div class="audit-question" id="audit-question" hidden>
+        <p class="audit-question-text">
+          <strong>Auditing any other courses?</strong>
+          Sit in on extras without taking them for credit. They&rsquo;re exported as a
+          <em>separate</em> <code>.ics</code> so you can drop them into a different Google
+          Calendar and get a distinct colour.
+        </p>
+        <div class="audit-question-actions">
+          <button type="button" class="audit-choice primary" id="audit-yes">Yes, let me pick</button>
+          <button type="button" class="audit-choice secondary" id="audit-no">No, skip</button>
+        </div>
+      </div>
+
+      <fieldset class="audit-fieldset" id="audits-fieldset" hidden>
         <legend>Audit <span class="legend-tag">optional, up to 3</span></legend>
         <p class="audit-help">
-          Want to sit in on other electives without taking them for credit? Pick up to 3. They&rsquo;re exported as a
-          <em>separate</em> <code>.ics</code> file so you can drop them into a different Google Calendar and get a
-          distinct colour.
+          Pick up to 3 of the remaining courses. They&rsquo;ll be exported as a separate
+          <code>.ics</code> file so you can drop them into a different Google Calendar.
         </p>
         <div class="counter audit-counter-row"><span id="audit-counter">0</span> / 3 audits selected</div>
         <ul class="elective-list audit-list">
           {% for e in electives %}
-          <li>
+          <li data-course-code="{{ e.code }}">
             <label>
               <input type="checkbox" name="audits" value="{{ e.code }}" {% if preselected_audits and e.code in
                 preselected_audits %}checked{% endif %}>
@@ -64,6 +76,7 @@
           </li>
           {% endfor %}
         </ul>
+        <button type="button" class="audit-reset" id="audit-reset">Actually, I&rsquo;m not auditing</button>
       </fieldset>
 
       <button type="submit" id="generate-btn" disabled>Generate Schedule</button>
@@ -77,31 +90,90 @@
         const eCounter = document.getElementById('counter');
         const aCounter = document.getElementById('audit-counter');
         const button = document.getElementById('generate-btn');
+        const auditQuestion = document.getElementById('audit-question');
+        const auditFieldset = document.getElementById('audits-fieldset');
+        const auditYes = document.getElementById('audit-yes');
+        const auditNo = document.getElementById('audit-no');
+        const auditReset = document.getElementById('audit-reset');
         const E_MAX = 4;
         const A_MAX = 3;
 
-        // Pair the two checkboxes for the same course code.
-        const pairs = {};
-        eboxes.forEach(b => { (pairs[b.value] = pairs[b.value] || {}).e = b; });
-        aboxes.forEach(b => { (pairs[b.value] = pairs[b.value] || {}).a = b; });
+        // States: null = haven't asked yet, 'open' = picking audits, 'skipped' = user said no.
+        let auditMode = null;
+        // If the server bounced us back with audits already checked (validation error),
+        // jump straight into the picker so the user can fix them in place.
+        if (Array.from(aboxes).some(b => b.checked)) auditMode = 'open';
+
+        function chosenElectiveSet() {
+          const s = new Set();
+          eboxes.forEach(b => { if (b.checked) s.add(b.value); });
+          return s;
+        }
+
+        function syncAuditList() {
+          const chosen = chosenElectiveSet();
+          aboxes.forEach(b => {
+            const li = b.closest('li');
+            if (chosen.has(b.value)) {
+              if (b.checked) b.checked = false;
+              li.hidden = true;
+            } else {
+              li.hidden = false;
+            }
+          });
+        }
+
+        function visibleAuditCount() {
+          return Array.from(aboxes).filter(b => b.checked && !b.closest('li').hidden).length;
+        }
 
         function update() {
           const eChecked = Array.from(eboxes).filter(b => b.checked).length;
-          const aChecked = Array.from(aboxes).filter(b => b.checked).length;
-          eCounter.textContent = eChecked;
-          aCounter.textContent = aChecked;
           const eAtMax = eChecked >= E_MAX;
-          const aAtMax = aChecked >= A_MAX;
 
-          Object.values(pairs).forEach(p => {
-            if (!p.e || !p.a) return;
-            // Cross-disable: a course can't be both an elective and an audit.
-            p.a.disabled = p.e.checked || (!p.a.checked && aAtMax);
-            p.e.disabled = p.a.checked || (!p.e.checked && eAtMax);
+          // Cap electives at 4.
+          eboxes.forEach(b => { b.disabled = !b.checked && eAtMax; });
+          eCounter.textContent = eChecked;
+
+          // Audit visibility/state machine.
+          if (eChecked < E_MAX) {
+            auditQuestion.hidden = true;
+            auditFieldset.hidden = true;
+          } else if (auditMode === null) {
+            auditQuestion.hidden = false;
+            auditFieldset.hidden = true;
+          } else if (auditMode === 'open') {
+            auditQuestion.hidden = true;
+            auditFieldset.hidden = false;
+            syncAuditList();
+          } else { // 'skipped'
+            auditQuestion.hidden = true;
+            auditFieldset.hidden = true;
+          }
+
+          // Audit cap + counter (only meaningful when fieldset is showing).
+          const aChecked = visibleAuditCount();
+          aCounter.textContent = aChecked;
+          const aAtMax = aChecked >= A_MAX;
+          aboxes.forEach(b => {
+            if (b.closest('li').hidden) { b.disabled = true; return; }
+            b.disabled = !b.checked && aAtMax;
           });
 
           button.disabled = eChecked !== E_MAX;
         }
+
+        auditYes.addEventListener('click', () => { auditMode = 'open'; update(); });
+        auditNo.addEventListener('click', () => {
+          auditMode = 'skipped';
+          aboxes.forEach(b => { b.checked = false; });
+          update();
+        });
+        auditReset.addEventListener('click', () => {
+          auditMode = 'skipped';
+          aboxes.forEach(b => { b.checked = false; });
+          update();
+        });
 
         eboxes.forEach(b => b.addEventListener('change', update));
         aboxes.forEach(b => b.addEventListener('change', update));

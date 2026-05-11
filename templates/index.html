@@ -27,7 +27,7 @@
 
     {% if view == 'select' %}
     <form method="post" action="{{ url_for('schedule_view') }}" id="elective-form">
-      <fieldset class="elective-fieldset">
+      <fieldset class="elective-fieldset" id="electives-fieldset">
         <legend>Choose 4 electives</legend>
         <div class="counter"><span id="counter">0</span> / 4 selected</div>
         <ul class="elective-list">
@@ -43,28 +43,68 @@
           {% endfor %}
         </ul>
       </fieldset>
+
+      <fieldset class="audit-fieldset" id="audits-fieldset">
+        <legend>Audit <span class="legend-tag">optional, up to 3</span></legend>
+        <p class="audit-help">
+          Want to sit in on other electives without taking them for credit? Pick up to 3. They&rsquo;re exported as a
+          <em>separate</em> <code>.ics</code> file so you can drop them into a different Google Calendar and get a
+          distinct colour.
+        </p>
+        <div class="counter audit-counter-row"><span id="audit-counter">0</span> / 3 audits selected</div>
+        <ul class="elective-list audit-list">
+          {% for e in electives %}
+          <li>
+            <label>
+              <input type="checkbox" name="audits" value="{{ e.code }}" {% if preselected_audits and e.code in
+                preselected_audits %}checked{% endif %}>
+              <span class="elective-code" data-course="{{ e.code }}">{{ e.code }}</span>
+              <span class="elective-name">— {{ e.name }}</span>
+            </label>
+          </li>
+          {% endfor %}
+        </ul>
+      </fieldset>
+
       <button type="submit" id="generate-btn" disabled>Generate Schedule</button>
     </form>
 
     <script>
       (function () {
         const form = document.getElementById('elective-form');
-        const boxes = form.querySelectorAll('input[type=checkbox][name=electives]');
-        const counter = document.getElementById('counter');
+        const eboxes = form.querySelectorAll('input[type=checkbox][name=electives]');
+        const aboxes = form.querySelectorAll('input[type=checkbox][name=audits]');
+        const eCounter = document.getElementById('counter');
+        const aCounter = document.getElementById('audit-counter');
         const button = document.getElementById('generate-btn');
-        const MAX = 4;
+        const E_MAX = 4;
+        const A_MAX = 3;
+
+        // Pair the two checkboxes for the same course code.
+        const pairs = {};
+        eboxes.forEach(b => { (pairs[b.value] = pairs[b.value] || {}).e = b; });
+        aboxes.forEach(b => { (pairs[b.value] = pairs[b.value] || {}).a = b; });
 
         function update() {
-          const checked = Array.from(boxes).filter(b => b.checked);
-          counter.textContent = checked.length;
-          const atMax = checked.length >= MAX;
-          boxes.forEach(b => {
-            if (!b.checked) b.disabled = atMax;
+          const eChecked = Array.from(eboxes).filter(b => b.checked).length;
+          const aChecked = Array.from(aboxes).filter(b => b.checked).length;
+          eCounter.textContent = eChecked;
+          aCounter.textContent = aChecked;
+          const eAtMax = eChecked >= E_MAX;
+          const aAtMax = aChecked >= A_MAX;
+
+          Object.values(pairs).forEach(p => {
+            if (!p.e || !p.a) return;
+            // Cross-disable: a course can't be both an elective and an audit.
+            p.a.disabled = p.e.checked || (!p.a.checked && aAtMax);
+            p.e.disabled = p.a.checked || (!p.e.checked && eAtMax);
           });
-          button.disabled = checked.length !== MAX;
+
+          button.disabled = eChecked !== E_MAX;
         }
 
-        boxes.forEach(b => b.addEventListener('change', update));
+        eboxes.forEach(b => b.addEventListener('change', update));
+        aboxes.forEach(b => b.addEventListener('change', update));
         update();
       })();
     </script>
@@ -78,8 +118,18 @@
           map(attribute='name') | first }}</span>
         {% endfor %}
       </div>
+      {% if audits %}
+      <div class="audit-summary">
+        <strong>Auditing:</strong>
+        {% for code in audits %}
+        <span class="chip audit-chip" data-course="{{ code }}">{{ code }} — {{ electives | selectattr('code',
+          'equalto', code) | map(attribute='name') | first }}</span>
+        {% endfor %}
+      </div>
+      {% endif %}
       <div class="summary-meta">
         Total sessions: <strong>{{ session_count }}</strong>
+        {% if audit_session_count %}<span class="meta-aside">({{ audit_session_count }} audit)</span>{% endif %}
       </div>
     </section>
 
@@ -90,15 +140,28 @@
     <p class="import-tip">
       <strong>Tip:</strong> by default, Google Calendar imports the <code>.ics</code> into your <em>primary</em> calendar. For a toggleable PGDBA calendar (with one-click cleanup later), create a dedicated calendar first &mdash;
       <a href="https://github.com/vybhav72954/pgdba_schedule#recommended-import-into-a-dedicated-google-calendar" target="_blank" rel="noopener noreferrer">how to do that &rarr;</a>
+      {% if audits %}<br>
+      <strong class="audit-emphasis">For audits:</strong> create a <em>second</em> calendar (e.g. <code>PGDBA Audits</code>) and import the audit <code>.ics</code> into it &mdash; you&rsquo;ll get a different colour automatically.
+      {% endif %}
     </p>
 
-    <form method="post" action="{{ url_for('export_ics') }}" class="export-form" id="export-form">
-      {% for code in selected %}
-      <input type="hidden" name="electives" value="{{ code }}">
-      {% endfor %}
-      <button type="submit" class="primary">Export to Calendar (.ics)</button>
+    <div class="export-forms">
+      <form method="post" action="{{ url_for('export_ics') }}" class="export-form export-form-js">
+        {% for code in selected %}<input type="hidden" name="electives" value="{{ code }}">{% endfor %}
+        {% for code in audits %}<input type="hidden" name="audits" value="{{ code }}">{% endfor %}
+        <button type="submit" class="primary">Export Schedule (.ics)</button>
+      </form>
+
+      {% if audits %}
+      <form method="post" action="{{ url_for('export_audit_ics') }}" class="export-form export-form-js">
+        {% for code in selected %}<input type="hidden" name="electives" value="{{ code }}">{% endfor %}
+        {% for code in audits %}<input type="hidden" name="audits" value="{{ code }}">{% endfor %}
+        <button type="submit" class="primary audit-button">Export Audits (.ics)</button>
+      </form>
+      {% endif %}
+
       <a class="back-link" href="{{ url_for('index') }}">← Change Electives</a>
-    </form>
+    </div>
 
     <p class="cleanup-link">
       Accidentally imported into the wrong calendar?
@@ -125,13 +188,14 @@
             <td colspan="5">{{ week.label }}</td>
           </tr>
           {% for s in week.sessions %}
-          {% set is_core = s.course in core_courses %}
-          <tr class="{{ 'core-row' if is_core else 'elective-row' }}">
+          {% set cat = s.category %}
+          <tr class="{{ cat }}-row">
             <td>{{ s.date.strftime('%d %b %Y') }}</td>
             <td>{{ s.day }}</td>
             <td>{{ s.start }}–{{ s.end }}</td>
             <td>
               <span class="course-badge" data-course="{{ s.course }}">{{ s.course }}</span>
+              {% if cat == 'audit' %}<span class="audit-badge">AUDIT</span>{% endif %}
               <span class="course-name">{{ course_names[s.course] }}</span>
             </td>
             <td>{{ s.session }}</td>
@@ -165,9 +229,9 @@
 
     <script>
       (function () {
-        const form = document.getElementById('export-form');
+        const forms = document.querySelectorAll('.export-form-js');
         const callout = document.getElementById('export-callout');
-        if (!form || !callout) return;
+        if (!forms.length || !callout) return;
 
         const closeBtn = callout.querySelector('.callout-close');
         const dismissBtn = callout.querySelector('.callout-dismiss');
@@ -182,9 +246,9 @@
         }
 
         // Show shortly after submit so the file download has kicked off.
-        form.addEventListener('submit', function () {
+        forms.forEach(f => f.addEventListener('submit', function () {
           setTimeout(show, 250);
-        });
+        }));
 
         closeBtn.addEventListener('click', hide);
         dismissBtn.addEventListener('click', hide);

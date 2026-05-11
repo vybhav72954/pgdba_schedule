@@ -31,7 +31,9 @@ Runs on `localhost`. No login, no hosting, no API keys.
 
 ## Usage
 
-Select your 4 electives → view your schedule → click **Export to Calendar (.ics)** to download the file → import it into Google Calendar, Apple Calendar, or Outlook. Each event includes a 15-minute reminder.
+Select your 4 electives → optionally pick up to 3 courses to **audit** → view your schedule → click **Export Schedule (.ics)** to download the file → import it into Google Calendar, Apple Calendar, or Outlook. Each event includes a 15-minute reminder.
+
+If you picked audits, a second **Export Audits (.ics)** button shows up — that's a separate file containing only the audited sessions, prefixed with `[AUDIT]`. Import it into a *different* Google Calendar to get a distinct colour (Google takes the event colour from the parent calendar, not the .ics file).
 
 ## Recommended: import into a dedicated Google Calendar
 
@@ -46,6 +48,8 @@ By default, Google Calendar dumps an imported `.ics` into your **primary** calen
 7. Click **Import**.
 
 The schedule now lives in its own calendar — toggle it via the sidebar checkbox.
+
+If you also picked audits, repeat the same steps to create a second calendar (e.g. `PGDBA Audits`) in a different colour, and import `PGDBA_Sem3_Audits.ics` into that one. Now your audited classes show up on your calendar but visually separated from your real schedule.
 
 ## Accidentally imported? Remove the events
 

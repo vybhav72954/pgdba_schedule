@@ -138,14 +138,6 @@
   {
     "date": "2026-05-11",
     "day": "Monday",
-    "start": "10:15",
-    "end": "11:45",
-    "course": "CRF",
-    "session": "CRF-3: VR"
-  },
-  {
-    "date": "2026-05-11",
-    "day": "Monday",
     "start": "12:00",
     "end": "13:30",
     "course": "FRM",
@@ -181,7 +173,7 @@
     "start": "12:00",
     "end": "13:30",
     "course": "CRF",
-    "session": "CRF-4: VR"
+    "session": "CRF-3: VR"
   },
   {
     "date": "2026-05-12",
@@ -189,7 +181,7 @@
     "start": "14:30",
     "end": "16:00",
     "course": "CRF",
-    "session": "CRF-5: VR"
+    "session": "CRF-4: VR"
   },
   {
     "date": "2026-05-12",
@@ -278,6 +270,14 @@
     "end": "16:00",
     "course": "FRM",
     "session": "FRM-6: SP"
+  },
+  {
+    "date": "2026-05-15",
+    "day": "Friday",
+    "start": "16:15",
+    "end": "17:45",
+    "course": "CRF",
+    "session": "CRF-5: VR"
   },
   {
     "date": "2026-05-20",
@@ -602,6 +602,22 @@
   {
     "date": "2026-06-09",
     "day": "Tuesday",
+    "start": "10:15",
+    "end": "11:45",
+    "course": "EMABE",
+    "session": "EMABE-8 & 9: MC"
+  },
+  {
+    "date": "2026-06-09",
+    "day": "Tuesday",
+    "start": "12:00",
+    "end": "13:30",
+    "course": "EMABE",
+    "session": "EMABE-8 & 9: MC"
+  },
+  {
+    "date": "2026-06-09",
+    "day": "Tuesday",
     "start": "14:30",
     "end": "16:00",
     "course": "BDM",
@@ -632,22 +648,6 @@
     "session": "SAAPM-8 & 9: MC"
   },
   {
-    "date": "2026-06-11",
-    "day": "Thursday",
-    "start": "12:00",
-    "end": "13:30",
-    "course": "EMABE",
-    "session": "EMABE-8: MC"
-  },
-  {
-    "date": "2026-06-11",
-    "day": "Thursday",
-    "start": "14:30",
-    "end": "16:00",
-    "course": "EMABE",
-    "session": "EMABE-9: MC"
-  },
-  {
     "date": "2026-06-12",
     "day": "Friday",
     "start": "10:15",
@@ -662,6 +662,22 @@
     "end": "16:00",
     "course": "BDM",
     "session": "BDM-4"
+  },
+  {
+    "date": "2026-06-16",
+    "day": "Tuesday",
+    "start": "10:15",
+    "end": "11:45",
+    "course": "EMABE",
+    "session": "EMABE-10: MC (Group PPT.)"
+  },
+  {
+    "date": "2026-06-16",
+    "day": "Tuesday",
+    "start": "12:00",
+    "end": "13:30",
+    "course": "EMABE",
+    "session": "EMABE-10: MC (Group PPT.)"
   },
   {
     "date": "2026-06-16",
@@ -686,22 +702,6 @@
     "end": "16:00",
     "course": "SAAPM",
     "session": "SAAPM-10: MC\n(Group PPT.)\nContinues"
-  },
-  {
-    "date": "2026-06-18",
-    "day": "Thursday",
-    "start": "12:00",
-    "end": "13:30",
-    "course": "EMABE",
-    "session": "EMABE-10: MC\n(Group PPT.)"
-  },
-  {
-    "date": "2026-06-18",
-    "day": "Thursday",
-    "start": "14:30",
-    "end": "16:00",
-    "course": "EMABE",
-    "session": "EMABE-10: MC\n(Group PPT.)\nContinues"
   },
   {
     "date": "2026-06-19",

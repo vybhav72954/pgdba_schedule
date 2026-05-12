@@ -8,13 +8,14 @@
  * How to use
  *   1. Open https://script.google.com and click "New project".
  *   2. Paste this entire file into Code.gs (replace the default content).
- *   3. From the function dropdown at the top, pick `listPGDBAEvents`, click
+ *   3. Save the Project with a Name and save it to Drive
+ *   4. From the function dropdown at the top, pick `listPGDBAEvents`, click
  *      Run, and approve the Google Calendar permission prompt.
- *   4. Click "Execution log" at the bottom and check the count + per-calendar
+ *   5. Click "Execution log" at the bottom and check the count + per-calendar
  *      breakdown. Nothing has been deleted yet — this is a dry run.
- *   5. If the list looks right, switch the dropdown to `removePGDBAEvents`
+ *   6. If the list looks right, switch the dropdown to `removePGDBAEvents`
  *      and click Run. Watch the log for the deletion count.
- *   6. To clean up another Gmail account, sign out of script.google.com,
+ *   7. To clean up another Gmail account, sign out of script.google.com,
  *      sign in to the other account, and repeat steps 1–5.
  *
  * What it matches

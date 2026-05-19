@@ -354,14 +354,6 @@
   {
     "date": "2026-05-22",
     "day": "Friday",
-    "start": "10:15",
-    "end": "11:45",
-    "course": "CDA",
-    "session": "CDA-6: SMU"
-  },
-  {
-    "date": "2026-05-22",
-    "day": "Friday",
     "start": "12:00",
     "end": "13:30",
     "course": "PM",
@@ -421,7 +413,7 @@
     "start": "10:15",
     "end": "11:45",
     "course": "CDA",
-    "session": "CDA-7: SMU"
+    "session": "CDA-6: SMU"
   },
   {
     "date": "2026-05-26",
@@ -453,7 +445,7 @@
     "start": "10:15",
     "end": "11:45",
     "course": "CDA",
-    "session": "CDA-8: SMU"
+    "session": "CDA-7: SMU"
   },
   {
     "date": "2026-05-28",
@@ -472,20 +464,20 @@
     "session": "SAAPM-5: MC\n(Group PPT.) Continues"
   },
   {
-    "date": "2026-05-29",
-    "day": "Friday",
-    "start": "10:15",
-    "end": "11:45",
+    "date": "2026-05-28",
+    "day": "Thursday",
+    "start": "16:15",
+    "end": "17:45",
     "course": "FRM",
-    "session": "FRM-9 & 10: SP"
+    "session": "FRM-9: SP"
   },
   {
     "date": "2026-05-29",
     "day": "Friday",
-    "start": "12:00",
-    "end": "13:30",
+    "start": "14:30",
+    "end": "16:00",
     "course": "FRM",
-    "session": "FRM-9 & 10: SP"
+    "session": "FRM-10: SP"
   },
   {
     "date": "2026-06-01",
@@ -517,7 +509,7 @@
     "start": "10:15",
     "end": "11:45",
     "course": "CDA",
-    "session": "CDA-9: SMU"
+    "session": "CDA-8: SMU"
   },
   {
     "date": "2026-06-02",
@@ -557,7 +549,7 @@
     "start": "10:15",
     "end": "11:45",
     "course": "CDA",
-    "session": "CDA-10: SMU"
+    "session": "CDA-9: SMU"
   },
   {
     "date": "2026-06-04",
@@ -586,6 +578,14 @@
   {
     "date": "2026-06-05",
     "day": "Friday",
+    "start": "12:00",
+    "end": "13:30",
+    "course": "CRF",
+    "session": "CRF-6: VR"
+  },
+  {
+    "date": "2026-06-05",
+    "day": "Friday",
     "start": "14:30",
     "end": "16:00",
     "course": "BDM",
@@ -598,6 +598,14 @@
     "end": "11:45",
     "course": "SM",
     "session": "SM-8: LH"
+  },
+  {
+    "date": "2026-06-08",
+    "day": "Monday",
+    "start": "12:00",
+    "end": "13:30",
+    "course": "CDA",
+    "session": "CDA-10: SMU"
   },
   {
     "date": "2026-06-09",
@@ -646,6 +654,22 @@
     "end": "17:45",
     "course": "SAAPM",
     "session": "SAAPM-8 & 9: MC"
+  },
+  {
+    "date": "2026-06-11",
+    "day": "Thursday",
+    "start": "10:15",
+    "end": "11:45",
+    "course": "CRF",
+    "session": "CRF-7 & 8: VR"
+  },
+  {
+    "date": "2026-06-11",
+    "day": "Thursday",
+    "start": "12:00",
+    "end": "13:30",
+    "course": "CRF",
+    "session": "CRF-7 & 8: VR"
   },
   {
     "date": "2026-06-12",
@@ -702,6 +726,22 @@
     "end": "16:00",
     "course": "SAAPM",
     "session": "SAAPM-10: MC\n(Group PPT.)\nContinues"
+  },
+  {
+    "date": "2026-06-19",
+    "day": "Friday",
+    "start": "10:15",
+    "end": "11:45",
+    "course": "CRF",
+    "session": "CRF-9 & 10: VR"
+  },
+  {
+    "date": "2026-06-19",
+    "day": "Friday",
+    "start": "12:00",
+    "end": "13:30",
+    "course": "CRF",
+    "session": "CRF-9 & 10: VR"
   },
   {
     "date": "2026-06-19",

@@ -330,14 +330,6 @@
   {
     "date": "2026-05-21",
     "day": "Thursday",
-    "start": "12:00",
-    "end": "13:30",
-    "course": "PM",
-    "session": "PM-7: MS"
-  },
-  {
-    "date": "2026-05-21",
-    "day": "Thursday",
     "start": "14:30",
     "end": "16:00",
     "course": "HRM",
@@ -350,14 +342,6 @@
     "end": "17:45",
     "course": "HRM",
     "session": "HRM-6 & 7: RK"
-  },
-  {
-    "date": "2026-05-22",
-    "day": "Friday",
-    "start": "12:00",
-    "end": "13:30",
-    "course": "PM",
-    "session": "PM-8: MS"
   },
   {
     "date": "2026-05-22",
@@ -374,6 +358,22 @@
     "end": "17:45",
     "course": "HRM",
     "session": "HRM-8: RK"
+  },
+  {
+    "date": "2026-05-23",
+    "day": "Saturday",
+    "start": "10:15",
+    "end": "11:45",
+    "course": "PM",
+    "session": "PM-7 & 8: MS"
+  },
+  {
+    "date": "2026-05-23",
+    "day": "Saturday",
+    "start": "12:00",
+    "end": "13:30",
+    "course": "PM",
+    "session": "PM-7 & 8: MS"
   },
   {
     "date": "2026-05-25",
@@ -440,36 +440,20 @@
     "session": "HRM-9 & 10: RK"
   },
   {
-    "date": "2026-05-28",
-    "day": "Thursday",
+    "date": "2026-05-29",
+    "day": "Friday",
     "start": "10:15",
     "end": "11:45",
-    "course": "CDA",
-    "session": "CDA-7: SMU"
+    "course": "CRF",
+    "session": "CRF Quiz (11:00 AM - 11:50 AM)"
   },
   {
-    "date": "2026-05-28",
-    "day": "Thursday",
+    "date": "2026-05-29",
+    "day": "Friday",
     "start": "12:00",
     "end": "13:30",
-    "course": "SAAPM",
-    "session": "SAAPM-5: MC\n(Group PPT.)"
-  },
-  {
-    "date": "2026-05-28",
-    "day": "Thursday",
-    "start": "14:30",
-    "end": "16:00",
-    "course": "SAAPM",
-    "session": "SAAPM-5: MC\n(Group PPT.) Continues"
-  },
-  {
-    "date": "2026-05-28",
-    "day": "Thursday",
-    "start": "16:15",
-    "end": "17:45",
-    "course": "FRM",
-    "session": "FRM-9: SP"
+    "course": "CRF",
+    "session": "CRF Quiz (11:00 AM - 11:50 AM)"
   },
   {
     "date": "2026-05-29",
@@ -480,36 +464,20 @@
     "session": "FRM-10: SP"
   },
   {
-    "date": "2026-06-01",
-    "day": "Monday",
-    "start": "10:15",
-    "end": "11:45",
-    "course": "SM",
-    "session": "SM-5: LH"
-  },
-  {
-    "date": "2026-06-01",
-    "day": "Monday",
-    "start": "12:00",
-    "end": "13:30",
-    "course": "EMABE",
-    "session": "EMABE-5 MC\n(Group PPT)"
-  },
-  {
-    "date": "2026-06-01",
-    "day": "Monday",
-    "start": "14:30",
-    "end": "16:00",
-    "course": "EMABE",
-    "session": "EMABE-5 MC\n(Group PPT)\nContinues"
-  },
-  {
     "date": "2026-06-02",
     "day": "Tuesday",
     "start": "10:15",
     "end": "11:45",
     "course": "CDA",
     "session": "CDA-8: SMU"
+  },
+  {
+    "date": "2026-06-02",
+    "day": "Tuesday",
+    "start": "12:00",
+    "end": "13:30",
+    "course": "SM",
+    "session": "SM-5: LH"
   },
   {
     "date": "2026-06-02",
@@ -557,7 +525,7 @@
     "start": "12:00",
     "end": "13:30",
     "course": "EMABE",
-    "session": "EMABE-6: MC"
+    "session": "EMABE-5: MC\n(Group PPT)"
   },
   {
     "date": "2026-06-04",
@@ -565,7 +533,15 @@
     "start": "14:30",
     "end": "16:00",
     "course": "EMABE",
-    "session": "EMABE-7: MC"
+    "session": "EMABE-5: MC\n(Group PPT)\nContinues"
+  },
+  {
+    "date": "2026-06-05",
+    "day": "Friday",
+    "start": "08:30",
+    "end": "10:00",
+    "course": "EMABE",
+    "session": "EMABE-6: MC"
   },
   {
     "date": "2026-06-05",
@@ -592,12 +568,12 @@
     "session": "BDM-2"
   },
   {
-    "date": "2026-06-08",
-    "day": "Monday",
-    "start": "10:15",
-    "end": "11:45",
-    "course": "SM",
-    "session": "SM-8: LH"
+    "date": "2026-06-05",
+    "day": "Friday",
+    "start": "16:15",
+    "end": "17:45",
+    "course": "EMABE",
+    "session": "EMABE-7: MC"
   },
   {
     "date": "2026-06-08",
@@ -606,6 +582,14 @@
     "end": "13:30",
     "course": "CDA",
     "session": "CDA-10: SMU"
+  },
+  {
+    "date": "2026-06-08",
+    "day": "Monday",
+    "start": "14:30",
+    "end": "16:00",
+    "course": "SM",
+    "session": "SM-8: LH"
   },
   {
     "date": "2026-06-09",
@@ -672,6 +656,22 @@
     "session": "CRF-7 & 8: VR"
   },
   {
+    "date": "2026-06-11",
+    "day": "Thursday",
+    "start": "14:30",
+    "end": "16:00",
+    "course": "PM",
+    "session": "PM Quiz-1 (3:00 PM - 4:00 PM)"
+  },
+  {
+    "date": "2026-06-11",
+    "day": "Thursday",
+    "start": "16:15",
+    "end": "17:45",
+    "course": "PM",
+    "session": "PM Quiz-1 (3:00 PM - 4:00 PM)"
+  },
+  {
     "date": "2026-06-12",
     "day": "Friday",
     "start": "10:15",
@@ -686,6 +686,22 @@
     "end": "16:00",
     "course": "BDM",
     "session": "BDM-4"
+  },
+  {
+    "date": "2026-06-15",
+    "day": "Monday",
+    "start": "14:30",
+    "end": "16:00",
+    "course": "FRM",
+    "session": "FRM (Group PPT): SP"
+  },
+  {
+    "date": "2026-06-15",
+    "day": "Monday",
+    "start": "16:15",
+    "end": "17:45",
+    "course": "FRM",
+    "session": "FRM (Group PPT): SP"
   },
   {
     "date": "2026-06-16",
@@ -714,14 +730,22 @@
   {
     "date": "2026-06-17",
     "day": "Wednesday",
+    "start": "10:15",
+    "end": "11:45",
+    "course": "PM",
+    "session": "PM Quiz-2\n(10:30 AM - 11:30 AM)"
+  },
+  {
+    "date": "2026-06-18",
+    "day": "Thursday",
     "start": "12:00",
     "end": "13:30",
     "course": "SAAPM",
     "session": "SAAPM-10: MC\n(Group PPT.)"
   },
   {
-    "date": "2026-06-17",
-    "day": "Wednesday",
+    "date": "2026-06-18",
+    "day": "Thursday",
     "start": "14:30",
     "end": "16:00",
     "course": "SAAPM",
@@ -856,6 +880,22 @@
     "session": "PRO-3: SB"
   },
   {
+    "date": "2026-08-14",
+    "day": "Friday",
+    "start": "14:30",
+    "end": "16:00",
+    "course": "IBC",
+    "session": "IBC-1 & 2: AB"
+  },
+  {
+    "date": "2026-08-14",
+    "day": "Friday",
+    "start": "16:15",
+    "end": "17:45",
+    "course": "IBC",
+    "session": "IBC-1 & 2: AB"
+  },
+  {
     "date": "2026-08-17",
     "day": "Monday",
     "start": "10:15",
@@ -882,10 +922,26 @@
   {
     "date": "2026-08-18",
     "day": "Tuesday",
+    "start": "12:00",
+    "end": "13:30",
+    "course": "IBC",
+    "session": "IBC-3: AB"
+  },
+  {
+    "date": "2026-08-18",
+    "day": "Tuesday",
     "start": "14:30",
     "end": "16:00",
     "course": "BDM",
     "session": "BDM-9"
+  },
+  {
+    "date": "2026-08-18",
+    "day": "Tuesday",
+    "start": "16:15",
+    "end": "17:45",
+    "course": "IBC",
+    "session": "IBC-4: AB"
   },
   {
     "date": "2026-08-19",
@@ -914,10 +970,26 @@
   {
     "date": "2026-08-20",
     "day": "Thursday",
+    "start": "12:00",
+    "end": "13:30",
+    "course": "IBC",
+    "session": "IBC-5: AB"
+  },
+  {
+    "date": "2026-08-20",
+    "day": "Thursday",
     "start": "14:30",
     "end": "16:00",
     "course": "BDM",
     "session": "BDM-10"
+  },
+  {
+    "date": "2026-08-20",
+    "day": "Thursday",
+    "start": "16:15",
+    "end": "17:45",
+    "course": "IBC",
+    "session": "IBC-6: AB"
   },
   {
     "date": "2026-08-21",
@@ -960,6 +1032,14 @@
     "session": "BDM-11"
   },
   {
+    "date": "2026-09-01",
+    "day": "Tuesday",
+    "start": "16:15",
+    "end": "17:45",
+    "course": "IBC",
+    "session": "IBC-7: AB"
+  },
+  {
     "date": "2026-09-02",
     "day": "Wednesday",
     "start": "10:15",
@@ -994,10 +1074,26 @@
   {
     "date": "2026-09-03",
     "day": "Thursday",
+    "start": "12:00",
+    "end": "13:30",
+    "course": "IBC",
+    "session": "IBC-8: AB"
+  },
+  {
+    "date": "2026-09-03",
+    "day": "Thursday",
     "start": "14:30",
     "end": "16:00",
     "course": "BDM",
     "session": "BDM-12"
+  },
+  {
+    "date": "2026-09-03",
+    "day": "Thursday",
+    "start": "16:15",
+    "end": "17:45",
+    "course": "IBC",
+    "session": "IBC-9: AB"
   },
   {
     "date": "2026-09-07",
@@ -1006,6 +1102,14 @@
     "end": "11:45",
     "course": "BE",
     "session": "BE-6: PP"
+  },
+  {
+    "date": "2026-09-07",
+    "day": "Monday",
+    "start": "12:00",
+    "end": "13:30",
+    "course": "IBC",
+    "session": "IBC-10: AB"
   },
   {
     "date": "2026-09-07",
